@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuestionario de Ingeniería de Requerimientos — App Web</title>
+  <style>
+    :root{
+      --bg:#0f1220; --card:#171a2b; --ink:#e6e8f2; --muted:#a9adc1;
+      --accent:#7c9cff; --ok:#2ecc71; --bad:#ff5c5c; --border:#2a2e46;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Noto Sans',sans-serif}
+    header{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,var(--bg),rgba(15,18,32,.6));backdrop-filter: blur(6px);border-bottom:1px solid var(--border)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    h1{font-size:clamp(1.2rem,2.5vw,1.8rem);margin:6px 0 10px}
+    p.sub{color:var(--muted);margin:0 0 8px}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 16px}
+    .btn{border:1px solid var(--border);background:var(--card);color:var(--ink);padding:10px 14px;border-radius:14px;cursor:pointer}
+    .btn:hover{border-color:var(--accent)}
+    main{padding:24px 0 48px}
+    section{background:var(--card);border:1px solid var(--border);border-radius:18px;margin:18px 0;padding:18px}
+    section>h2{margin:0 0 8px;font-size:1.05rem}
+    .q{padding:14px;border:1px solid var(--border);border-radius:14px;margin:12px 0;background:rgba(255,255,255,.02)}
+    .q h3{margin:0 0 10px;font-size:1rem;line-height:1.35}
+    .opts{display:grid;gap:8px}
+    .opt{position:relative}
+    .opt input{position:absolute;opacity:0;pointer-events:none}
+    .chip{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:12px;cursor:pointer;color:var(--ink);transition:all .15s ease}
+    .chip:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,156,255,.15) inset}
+    /* feedback */
+    .opt input:checked + .chip.correct{border-color:var(--ok);box-shadow:0 0 0 3px rgba(46,204,113,.2) inset}
+    .opt input:checked + .chip.correct::after{content:" ✓ Correcta"; color:var(--ok); font-weight:600; margin-left:.35rem}
+    .opt input:checked + .chip.incorrect{border-color:var(--bad);box-shadow:0 0 0 3px rgba(255,92,92,.2) inset}
+    .opt input:checked + .chip.incorrect::after{content:" ✗ Incorrecta"; color:var(--bad); font-weight:600; margin-left:.35rem}
+    .exp{color:var(--muted);font-size:.92rem;margin-top:6px}
+    details{margin-top:8px}
+    details summary{cursor:pointer;color:var(--accent)}
+    .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .tag{font-size:.75rem;padding:4px 8px;border:1px dashed var(--border);border-radius:999px;color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    footer{color:var(--muted);text-align:center;padding:24px 0 40px}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Cuestionario de Ingeniería de Requerimientos</h1>
+    <p class="sub">Selecciona una respuesta y verás al instante si es correcta. Preguntas agrupadas por partes I–V.</p>
+    <div class="controls">
+      <button class="btn" onclick="document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false)">Reiniciar respuestas</button>
+      <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Abrir explicaciones</button>
+      <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Cerrar explicaciones</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- PARTE I -->
+  <section>
+    <h2>PARTE I</h2>
+
+    <div class="q">
+      <h3>1) ¿Cuál es la principal diferencia entre un sistema de información y un sistema embebido?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q1" type="radio"><span class="chip incorrect">a) Los de información solo procesan datos; los embebidos solo controlan hardware.</span></label>
+        <label class="opt"><input name="q1" type="radio" checked><span class="chip correct">b) Los de información interactúan principalmente con humanos; los embebidos controlan procesos físicos.</span></label>
+        <label class="opt"><input name="q1" type="radio"><span class="chip incorrect">c) Los embebidos siempre son más complejos.</span></label>
+        <label class="opt"><input name="q1" type="radio"><span class="chip incorrect">d) No hay diferencia significativa.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>2) ¿Por qué los sistemas adaptativos son desafiantes para la ingeniería de requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2" type="radio"><span class="chip incorrect">a) Requieren hardware especializado.</span></label>
+        <label class="opt"><input name="q2" type="radio"><span class="chip incorrect">b) Son más costosos.</span></label>
+        <label class="opt"><input name="q2" type="radio"><span class="chip incorrect">c) No necesitan requisitos de seguridad.</span></label>
+        <label class="opt"><input name="q2" type="radio" checked><span class="chip correct">d) Su comportamiento dinámico dificulta anticipar todos los escenarios.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>3) Un sistema de información es…</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3" type="radio"><span class="chip incorrect">a) Un sistema que solo almacena datos.</span></label>
+        <label class="opt"><input name="q3" type="radio" checked><span class="chip correct">b) Un sistema sociotécnico que recopila, procesa y disemina información.</span></label>
+        <label class="opt"><input name="q3" type="radio"><span class="chip incorrect">c) Un tipo de sistema embebido con interfaz web.</span></label>
+        <label class="opt"><input name="q3" type="radio"><span class="chip incorrect">d) Un sistema que no requiere interacción humana.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>4) ¿Cuáles son los tres puntos clave en los que se centra la ingeniería de requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4" type="radio"><span class="chip incorrect">a) Planificación, Programación y Ejecución</span></label>
+        <label class="opt"><input name="q4" type="radio"><span class="chip incorrect">b) Análisis, Diseño y Pruebas</span></label>
+        <label class="opt"><input name="q4" type="radio"><span class="chip incorrect">c) Comunicación, Implementación y Soporte</span></label>
+        <label class="opt"><input name="q4" type="radio" checked><span class="chip correct">d) Acuerdo, Documentación y Contenido</span></label>
+      </div>
+      <details><summary>Explicación</summary><div class="exp">Según el cuestionario, se resume en acuerdo con stakeholders, documentación clara y contenido de requisitos; en literatura también se listan elicitar–especificar–validar.</div></details>
+    </div>
+
+    <div class="q">
+      <h3>5) ¿Qué definen los requisitos de calidad (no funcionales)?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5" type="radio"><span class="chip incorrect">a) Funciones y servicios del sistema.</span></label>
+        <label class="opt"><input name="q5" type="radio" checked><span class="chip correct">b) Propiedades de calidad, rendimiento y fiabilidad.</span></label>
+        <label class="opt"><input name="q5" type="radio"><span class="chip incorrect">c) Restricciones tecnológicas y organizativas.</span></label>
+        <label class="opt"><input name="q5" type="radio"><span class="chip incorrect">e) Diseño visual e interfaz de usuario.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>6) Principal ventaja de diferenciar el “qué” del “cómo” en Ingeniería de Requisitos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q6" type="radio" checked><span class="chip correct">b) Evita soluciones que no resuelven necesidades reales.</span></label>
+        <label class="opt"><input name="q6" type="radio"><span class="chip incorrect">a) Diseñar la UI más rápido.</span></label>
+        <label class="opt"><input name="q6" type="radio"><span class="chip incorrect">c) Trabajar sin usuarios.</span></label>
+        <label class="opt"><input name="q6" type="radio"><span class="chip incorrect">d) Reducir tamaño del equipo.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>7) ¿Qué caracteriza a la ingeniería de requisitos como actividad transversal?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q7" type="radio" checked><span class="chip correct">b) Se mantiene durante todo el ciclo de vida, adaptándose a cambios.</span></label>
+        <label class="opt"><input name="q7" type="radio"><span class="chip incorrect">a) Solo al inicio.</span></label>
+        <label class="opt"><input name="q7" type="radio"><span class="chip incorrect">c) Solo en proyectos cortos.</span></label>
+        <label class="opt"><input name="q7" type="radio"><span class="chip incorrect">d) Sin coordinación.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>8) ¿Cuál de los siguientes roles NO forma parte de Scrum (guía oficial)?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q8" type="radio"><span class="chip incorrect">a) Product Owner</span></label>
+        <label class="opt"><input name="q8" type="radio"><span class="chip incorrect">b) Scrum Master</span></label>
+        <label class="opt"><input name="q8" type="radio" checked><span class="chip correct">c) Team Lead</span></label>
+        <label class="opt"><input name="q8" type="radio"><span class="chip incorrect">d) Development Team</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>9) ¿Cuál es una característica principal del modelo Cascada?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q9" type="radio" checked><span class="chip correct">b) Cada fase se completa antes de pasar a la siguiente.</span></label>
+        <label class="opt"><input name="q9" type="radio"><span class="chip incorrect">a) Fases iterativas.</span></label>
+        <label class="opt"><input name="q9" type="radio"><span class="chip incorrect">c) Requisitos cambian en cualquier momento.</span></label>
+        <label class="opt"><input name="q9" type="radio"><span class="chip incorrect">d) Sin documentación.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>10) ¿Cuál NO es una de las tres actividades principales de la ingeniería de requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q10" type="radio"><span class="chip incorrect">a) Elicitación</span></label>
+        <label class="opt"><input name="q10" type="radio"><span class="chip incorrect">b) Validación</span></label>
+        <label class="opt"><input name="q10" type="radio" checked><span class="chip correct">c) Negociación</span></label>
+        <label class="opt"><input name="q10" type="radio"><span class="chip incorrect">d) Documentación</span></label>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PARTE II -->
+  <section>
+    <h2>PARTE II</h2>
+
+    <div class="q">
+      <h3>1) Si la visión del sistema cambia, ¿qué sucede con los requisitos existentes?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2_1" type="radio"><span class="chip incorrect">a) No pasa nada.</span></label>
+        <label class="opt"><input name="q2_1" type="radio" checked><span class="chip correct">b) Pueden volverse inválidos o requerir ajustes.</span></label>
+        <label class="opt"><input name="q2_1" type="radio"><span class="chip incorrect">c) Solo cambian si lo decide el equipo.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>2) ¿Por qué un mismo requisito puede interpretarse distinto por diferentes interesados?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2_2" type="radio" checked><span class="chip correct">a) Diferente información o perspectiva.</span></label>
+        <label class="opt"><input name="q2_2" type="radio"><span class="chip incorrect">b) Porque nunca se escriben igual.</span></label>
+        <label class="opt"><input name="q2_2" type="radio"><span class="chip incorrect">c) Todos interpretan mal a propósito.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>3) Zona donde no se sabe si los objetos son cambiables o inmutables</h3>
+      <details><summary>Mostrar respuesta</summary><div class="exp">Zona gris.</div></details>
+    </div>
+
+    <div class="q">
+      <h3>4) ¿Por qué no se usan las clasificaciones de alcance del sistema y el límite del sistema al mismo tiempo?</h3>
+      <details><summary>Mostrar respuesta</summary><div class="exp">Porque aumentan innecesariamente la complejidad de la clasificación del objeto.</div></details>
+    </div>
+
+    <div class="q">
+      <h3>5) ¿Qué considerar desde la perspectiva empresarial al definir requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2_5" type="radio"><span class="chip incorrect">A) Solo estética visual.</span></label>
+        <label class="opt"><input name="q2_5" type="radio"><span class="chip incorrect">B) Solo requisitos técnicos.</span></label>
+        <label class="opt"><input name="q2_5" type="radio" checked><span class="chip correct">C) Requisitos, limitaciones de procesos, estrategias y restricciones financieras.</span></label>
+        <label class="opt"><input name="q2_5" type="radio"><span class="chip incorrect">D) Solo velocidad y tiempo de respuesta.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>6) ¿En qué se centra la perspectiva de la innovación?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2_6" type="radio"><span class="chip incorrect">A) Solo en reducir costos.</span></label>
+        <label class="opt"><input name="q2_6" type="radio" checked><span class="chip correct">B) Explorar potencial de innovación con tecnologías novedosas, competencia y deseos de usuarios.</span></label>
+        <label class="opt"><input name="q2_6" type="radio"><span class="chip incorrect">C) Solo marketing.</span></label>
+        <label class="opt"><input name="q2_6" type="radio"><span class="chip incorrect">D) Copiar funcionalidades existentes.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>7) ¿Cuál de las siguientes NO es una perspectiva del contexto?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q2_7" type="radio"><span class="chip incorrect">a) Empresarial</span></label>
+        <label class="opt"><input name="q2_7" type="radio"><span class="chip incorrect">b) Uso</span></label>
+        <label class="opt"><input name="q2_7" type="radio" checked><span class="chip correct">c) Perspectiva del problema</span></label>
+        <label class="opt"><input name="q2_7" type="radio"><span class="chip incorrect">d) Innovación</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>8) Menciona tres perspectivas del contexto y descríbelas brevemente</h3>
+      <details><summary>Mostrar ejemplo de respuesta</summary>
+        <div class="exp">
+          <ul>
+            <li><b>Perspectiva del uso:</b> Interacción real con escenarios y tareas.</li>
+            <li><b>Perspectiva del sujeto:</b> Usuarios/actores, características y necesidades.</li>
+            <li><b>Perspectiva del sistema informático:</b> Componentes técnicos y cómo satisfacen requerimientos.</li>
+            <li><b>Otras:</b> Desarrollo, Empresarial, Innovación, Sociedad, Técnica.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="grid-2">
+      <div class="q">
+        <h3>9) ¿Cuáles son criterios principales para seleccionar requisitos?</h3>
+        <div class="opts">
+          <label class="opt"><input name="q2_9" type="radio"><span class="chip incorrect">a) Uso, técnico y empresarial.</span></label>
+          <label class="opt"><input name="q2_9" type="radio" checked><span class="chip correct">b) Relevancia, factibilidad y alineación con objetivos.</span></label>
+          <label class="opt"><input name="q2_9" type="radio"><span class="chip incorrect">c) Impacto solo en UX.</span></label>
+        </div>
+      </div>
+      <div class="q">
+        <h3>10) ¿Qué es factibilidad en la selección de requisitos?</h3>
+        <div class="opts">
+          <label class="opt"><input name="q2_10" type="radio" checked><span class="chip correct">a) Si se puede implementar con los recursos disponibles.</span></label>
+          <label class="opt"><input name="q2_10" type="radio"><span class="chip incorrect">b) Importancia para usuarios.</span></label>
+          <label class="opt"><input name="q2_10" type="radio"><span class="chip incorrect">c) Estética y diseño visual.</span></label>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PARTE III -->
+  <section>
+    <h2>PARTE III</h2>
+
+    <div class="q">
+      <h3>1) ¿Qué técnicas son de elicitación?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_1" type="radio" checked><span class="chip correct">a) Entrevista, Cuestionarios, Lectura basada en perspectivas.</span></label>
+        <label class="opt"><input name="q3_1" type="radio"><span class="chip incorrect">b) Entrevista, Pensamiento de diseño, FCE.</span></label>
+        <label class="opt"><input name="q3_1" type="radio"><span class="chip incorrect">c) Pensamiento de diseño, Lectura, Método KJ.</span></label>
+        <label class="opt"><input name="q3_1" type="radio"><span class="chip incorrect">d) FCE, Lluvia de ideas, Cuestionarios.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>2) Limitación de preguntas cerradas en entrevistas</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_2" type="radio"><span class="chip incorrect">a) Difíciles de analizar.</span></label>
+        <label class="opt"><input name="q3_2" type="radio" checked><span class="chip correct">c) No fomentan ideas nuevas.</span></label>
+        <label class="opt"><input name="q3_2" type="radio"><span class="chip incorrect">b) No permiten respuestas precisas.</span></label>
+        <label class="opt"><input name="q3_2" type="radio"><span class="chip incorrect">d) No sirven en entrevistas exploratorias.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>3) Ventaja de talleres frente a entrevistas individuales</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_3" type="radio" checked><span class="chip correct">b) Mayor interacción y consenso entre múltiples partes interesadas.</span></label>
+        <label class="opt"><input name="q3_3" type="radio"><span class="chip incorrect">a) Menos preparación.</span></label>
+        <label class="opt"><input name="q3_3" type="radio"><span class="chip incorrect">c) Garantizan que no haya conflictos.</span></label>
+        <label class="opt"><input name="q3_3" type="radio"><span class="chip incorrect">d) Sin moderador.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>4) Técnica que agrupa ideas por afinidad para priorizarlas</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_4" type="radio"><span class="chip incorrect">a) Lluvia de ideas</span></label>
+        <label class="opt"><input name="q3_4" type="radio"><span class="chip incorrect">b) Prototipado</span></label>
+        <label class="opt"><input name="q3_4" type="radio" checked><span class="chip correct">c) Método KJ</span></label>
+        <label class="opt"><input name="q3_4" type="radio"><span class="chip incorrect">d) Mapas mentales</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>5) Ventaja principal de requisitos textuales frente a modelos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_5" type="radio" checked><span class="chip correct">b) Son universales y fáciles de entender.</span></label>
+        <label class="opt"><input name="q3_5" type="radio"><span class="chip incorrect">a) Más precisos y específicos.</span></label>
+        <label class="opt"><input name="q3_5" type="radio"><span class="chip incorrect">c) Siempre libres de ambigüedad.</span></label>
+        <label class="opt"><input name="q3_5" type="radio"><span class="chip incorrect">d) Permiten ver relaciones gráficas.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>6) ¿Qué problema causa la ambigüedad léxica, sintáctica y semántica?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_6" type="radio" checked><span class="chip correct">c) Genera diferentes interpretaciones y malentendidos.</span></label>
+        <label class="opt"><input name="q3_6" type="radio"><span class="chip incorrect">a) Más flexibilidad.</span></label>
+        <label class="opt"><input name="q3_6" type="radio"><span class="chip incorrect">b) Facilita comunicación.</span></label>
+        <label class="opt"><input name="q3_6" type="radio"><span class="chip incorrect">d) Reduce documentación.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>7) ¿Qué ayuda a reducir la ambigüedad en los requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_7" type="radio" checked><span class="chip correct">b) Glosarios, patrones de redacción y lenguajes controlados.</span></label>
+        <label class="opt"><input name="q3_7" type="radio"><span class="chip incorrect">a) Lenguaje informal.</span></label>
+        <label class="opt"><input name="q3_7" type="radio"><span class="chip incorrect">c) Eliminar detalles técnicos.</span></label>
+        <label class="opt"><input name="q3_7" type="radio"><span class="chip incorrect">d) Solo diagramas.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>8) Función principal de un mediador en negociación</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_8" type="radio" checked><span class="chip correct">b) Ayudar a las partes a llegar a un acuerdo sin imponer decisión.</span></label>
+        <label class="opt"><input name="q3_8" type="radio"><span class="chip incorrect">a) Tomar la decisión final.</span></label>
+        <label class="opt"><input name="q3_8" type="radio"><span class="chip incorrect">c) Representar a una de las partes.</span></label>
+        <label class="opt"><input name="q3_8" type="radio"><span class="chip incorrect">d) Generar un nuevo conflicto.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>9) ¿Cuántos tipos de causas de conflicto y tipos de conflicto se introducen, respectivamente?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_9" type="radio" checked><span class="chip correct">a) Cinco causas y tres tipos.</span></label>
+        <label class="opt"><input name="q3_9" type="radio"><span class="chip incorrect">b) Siete causas y seis tipos.</span></label>
+        <label class="opt"><input name="q3_9" type="radio"><span class="chip incorrect">c) Cuatro y cuatro.</span></label>
+        <label class="opt"><input name="q3_9" type="radio"><span class="chip incorrect">d) Seis y siete.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>10) ¿Cuál es una de las actividades de negociación de requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q3_10" type="radio" checked><span class="chip correct">c) Identificación de conflictos.</span></label>
+        <label class="opt"><input name="q3_10" type="radio"><span class="chip incorrect">b) Estrategia de decisión.</span></label>
+        <label class="opt"><input name="q3_10" type="radio"><span class="chip incorrect">a) Generación de gramática.</span></label>
+        <label class="opt"><input name="q3_10" type="radio"><span class="chip incorrect">d) Modelado meta.</span></label>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PARTE IV -->
+  <section>
+    <h2>PARTE IV</h2>
+
+    <div class="q">
+      <h3>1) ¿Cuál de las siguientes NO es una regla para documentar escenarios?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_1" type="radio" checked><span class="chip correct">D) Utilizar únicamente la voz pasiva</span></label>
+        <label class="opt"><input name="q4_1" type="radio"><span class="chip incorrect">A) Usar el presente</span></label>
+        <label class="opt"><input name="q4_1" type="radio"><span class="chip incorrect">B) Numerar cada paso</span></label>
+        <label class="opt"><input name="q4_1" type="radio"><span class="chip incorrect">C) Incluir secuencias de interacciones</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>2) Acoplamiento objetivo–escenario se refiere a…</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_2" type="radio" checked><span class="chip correct">B) Relación entre objetivos del sistema y situaciones descritas en escenarios.</span></label>
+        <label class="opt"><input name="q4_2" type="radio"><span class="chip incorrect">A) Relación con pasos numerados.</span></label>
+        <label class="opt"><input name="q4_2" type="radio"><span class="chip incorrect">C) Identificación de actores.</span></label>
+        <label class="opt"><input name="q4_2" type="radio"><span class="chip incorrect">D) Orden de reglas.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>3) En un DFD, ¿qué representa el origen/destino externo?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_3" type="radio"><span class="chip incorrect">a) Almacén de datos</span></label>
+        <label class="opt"><input name="q4_3" type="radio" checked><span class="chip correct">b) Fuente/Sumidero</span></label>
+        <label class="opt"><input name="q4_3" type="radio"><span class="chip incorrect">c) Proceso</span></label>
+        <label class="opt"><input name="q4_3" type="radio"><span class="chip incorrect">d) Mini especificación</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>4) Diferencia principal entre AFD y AFN</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_4" type="radio" checked><span class="chip correct">c) AFD: máx. una transición por evento/estado; AFN: puede tener varias.</span></label>
+        <label class="opt"><input name="q4_4" type="radio"><span class="chip incorrect">a) AFD permite múltiples; AFN no.</span></label>
+        <label class="opt"><input name="q4_4" type="radio"><span class="chip incorrect">b) AFN solo para deterministas.</span></label>
+        <label class="opt"><input name="q4_4" type="radio"><span class="chip incorrect">d) AFN no modela concurrencia, AFD sí.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>5) Relación correcta entre historias de usuario y escenarios</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_5" type="radio" checked><span class="chip correct">b) Las historias se descomponen en escenarios para validar requisitos.</span></label>
+        <label class="opt"><input name="q4_5" type="radio"><span class="chip incorrect">a) Historias son versiones detalladas de escenarios.</span></label>
+        <label class="opt"><input name="q4_5" type="radio"><span class="chip incorrect">c) Los escenarios son resúmenes cortos.</span></label>
+        <label class="opt"><input name="q4_5" type="radio"><span class="chip incorrect">d) Sin relación.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>6) ¿Qué escenario representa el flujo típico y exitoso sin errores?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_6" type="radio" checked><span class="chip correct">b) Escenario principal</span></label>
+        <label class="opt"><input name="q4_6" type="radio"><span class="chip incorrect">a) Alternativo</span></label>
+        <label class="opt"><input name="q4_6" type="radio"><span class="chip incorrect">c) Excepción</span></label>
+        <label class="opt"><input name="q4_6" type="radio"><span class="chip incorrect">d) Exploratorio</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>7) Diferencia entre objetivo y requisito orientado a soluciones</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_7" type="radio" checked><span class="chip correct">B) Objetivos: metas generales; requisitos orientados a soluciones: funcionalidades específicas.</span></label>
+        <label class="opt"><input name="q4_7" type="radio"><span class="chip incorrect">A) Objetivos más detallados.</span></label>
+        <label class="opt"><input name="q4_7" type="radio"><span class="chip incorrect">C) Requisitos son abstractos; objetivos siempre específicos.</span></label>
+        <label class="opt"><input name="q4_7" type="radio"><span class="chip incorrect">D) Objetivos definen interacciones; requisitos solo comportamiento técnico.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>8) Propósito de utilizar EER en requisitos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_8" type="radio" checked><span class="chip correct">C) Modelar y estructurar datos y sus relaciones.</span></label>
+        <label class="opt"><input name="q4_8" type="radio"><span class="chip incorrect">A) Definir algoritmos.</span></label>
+        <label class="opt"><input name="q4_8" type="radio"><span class="chip incorrect">B) Establecer jerarquías de clases de software.</span></label>
+        <label class="opt"><input name="q4_8" type="radio"><span class="chip incorrect">D) Crear métodos y funciones.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>9) Beneficio de utilizar modelos de objetivos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_9" type="radio" checked><span class="chip correct">b) Identificar y evaluar realizaciones alternativas para satisfacer un objetivo.</span></label>
+        <label class="opt"><input name="q4_9" type="radio"><span class="chip incorrect">a) Reducir tiempo de código.</span></label>
+        <label class="opt"><input name="q4_9" type="radio"><span class="chip incorrect">c) Eliminar requisitos funcionales.</span></label>
+        <label class="opt"><input name="q4_9" type="radio"><span class="chip incorrect">d) Simplificar arquitectura ignorando stakeholders.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>10) En un árbol de objetivos AND/OR, ¿qué indica que cualquiera de los subobjetivos basta?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q4_10" type="radio" checked><span class="chip correct">b) Descomposición OR</span></label>
+        <label class="opt"><input name="q4_10" type="radio"><span class="chip incorrect">a) AND</span></label>
+        <label class="opt"><input name="q4_10" type="radio"><span class="chip incorrect">c) REQUIERE</span></label>
+        <label class="opt"><input name="q4_10" type="radio"><span class="chip incorrect">d) CONFLICTO</span></label>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PARTE V -->
+  <section>
+    <h2>PARTE V — Actividades transversales</h2>
+
+    <div class="q">
+      <h3>1) Validación vs verificación (V/F): "La validación verifica si está construido correctamente; la verificación comprueba si construimos lo correcto".</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_1" type="radio"><span class="chip incorrect">Verdadero</span></label>
+        <label class="opt"><input name="q5_1" type="radio" checked><span class="chip correct">Falso</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>2) ¿Cuál NO es un criterio de priorización de requisitos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_2" type="radio"><span class="chip incorrect">a) Costo de implementación</span></label>
+        <label class="opt"><input name="q5_2" type="radio"><span class="chip incorrect">b) Duración</span></label>
+        <label class="opt"><input name="q5_2" type="radio"><span class="chip incorrect">c) Valor de negocio</span></label>
+        <label class="opt"><input name="q5_2" type="radio" checked><span class="chip correct">d) Color del interfaz</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>3) Relacione (elige la definición correcta de cada término)</h3>
+      <div class="q">
+        <h3>a) Volatilidad</h3>
+        <div class="opts">
+          <label class="opt"><input name="q5_3a" type="radio" checked><span class="chip correct">Probabilidad de que el requisito cambie en el futuro.</span></label>
+          <label class="opt"><input name="q5_3a" type="radio"><span class="chip incorrect">Probabilidad de fallo/impacto negativo.</span></label>
+          <label class="opt"><input name="q5_3a" type="radio"><span class="chip incorrect">Beneficio económico esperado.</span></label>
+          <label class="opt"><input name="q5_3a" type="radio"><span class="chip incorrect">Tiempo estimado de implementación.</span></label>
+        </div>
+      </div>
+      <div class="q">
+        <h3>b) Riesgo</h3>
+        <div class="opts">
+          <label class="opt"><input name="q5_3b" type="radio"><span class="chip incorrect">Probabilidad de cambio futuro.</span></label>
+          <label class="opt"><input name="q5_3b" type="radio" checked><span class="chip correct">Probabilidad de fallo o impacto negativo.</span></label>
+          <label class="opt"><input name="q5_3b" type="radio"><span class="chip incorrect">Beneficio económico esperado.</span></label>
+          <label class="opt"><input name="q5_3b" type="radio"><span class="chip incorrect">Tiempo estimado de implementación.</span></label>
+        </div>
+      </div>
+      <div class="q">
+        <h3>c) Valor de negocio</h3>
+        <div class="opts">
+          <label class="opt"><input name="q5_3c" type="radio"><span class="chip incorrect">Probabilidad de cambio</span></label>
+          <label class="opt"><input name="q5_3c" type="radio"><span class="chip incorrect">Probabilidad de fallo</span></label>
+          <label class="opt"><input name="q5_3c" type="radio" checked><span class="chip correct">Beneficio económico esperado.</span></label>
+          <label class="opt"><input name="q5_3c" type="radio"><span class="chip incorrect">Tiempo estimado</span></label>
+        </div>
+      </div>
+      <div class="q">
+        <h3>d) Duración</h3>
+        <div class="opts">
+          <label class="opt"><input name="q5_3d" type="radio"><span class="chip incorrect">Cambio futuro</span></label>
+          <label class="opt"><input name="q5_3d" type="radio"><span class="chip incorrect">Fallo/impacto</span></label>
+          <label class="opt"><input name="q5_3d" type="radio"><span class="chip incorrect">Beneficio económico</span></label>
+          <label class="opt"><input name="q5_3d" type="radio" checked><span class="chip correct">Tiempo estimado de implementación.</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>4) Factor crítico de éxito para "comentario de artefactos"</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_4" type="radio"><span class="chip incorrect">a) Usar solo evaluaciones paralelas.</span></label>
+        <label class="opt"><input name="q5_4" type="radio" checked><span class="chip correct">b) Compromiso de revisores y cobertura de perspectivas relevantes.</span></label>
+        <label class="opt"><input name="q5_4" type="radio"><span class="chip incorrect">c) Eliminar reuniones de consolidación.</span></label>
+        <label class="opt"><input name="q5_4" type="radio"><span class="chip incorrect">d) Máximo dos revisores.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>5) Gestión de configuración: propiedad de una "línea base" de requisitos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_5" type="radio"><span class="chip incorrect">a) Permite modificaciones libres.</span></label>
+        <label class="opt"><input name="q5_5" type="radio"><span class="chip incorrect">b) Solo artefactos de documentos.</span></label>
+        <label class="opt"><input name="q5_5" type="radio"><span class="chip incorrect">c) No sujeta a gestión de cambios.</span></label>
+        <label class="opt"><input name="q5_5" type="radio" checked><span class="chip correct">d) Visible para el cliente con artefactos de una versión específica.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>6) Validación mediante prototipos: ¿qué guía la selección de artefactos?</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_6" type="radio"><span class="chip incorrect">a) Listas de verificación previas.</span></label>
+        <label class="opt"><input name="q5_6" type="radio"><span class="chip incorrect">b) Priorización del cliente.</span></label>
+        <label class="opt"><input name="q5_6" type="radio" checked><span class="chip correct">c) Objetivos y escenarios relacionados.</span></label>
+        <label class="opt"><input name="q5_6" type="radio"><span class="chip incorrect">d) Complejidad técnica.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>7) La verbalización de modelos convierte modelos en requisitos textuales sencillos (V/F)</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_7" type="radio" checked><span class="chip correct">Verdadero</span></label>
+        <label class="opt"><input name="q5_7" type="radio"><span class="chip incorrect">Falso</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>8) Técnica de validación que evalúa desde diferentes perspectivas (cliente, arquitecto, QA)</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_8" type="radio" checked><span class="chip correct">b) Lectura basada en la perspectiva</span></label>
+        <label class="opt"><input name="q5_8" type="radio"><span class="chip incorrect">a) Creación de artefactos</span></label>
+        <label class="opt"><input name="q5_8" type="radio"><span class="chip incorrect">c) Lista de verificación</span></label>
+        <label class="opt"><input name="q5_8" type="radio"><span class="chip incorrect">d) Priorización</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>9) Objetivo principal de la trazabilidad de requisitos</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_9" type="radio" checked><span class="chip correct">b) Seguir el rastro de requisitos a lo largo del ciclo de vida.</span></label>
+        <label class="opt"><input name="q5_9" type="radio"><span class="chip incorrect">a) Reducir el costo del proyecto.</span></label>
+        <label class="opt"><input name="q5_9" type="radio"><span class="chip incorrect">c) Generar más diagramas.</span></label>
+        <label class="opt"><input name="q5_9" type="radio"><span class="chip incorrect">d) Automatizar selección de personal.</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <h3>10) La trazabilidad bidireccional permite seguir un requisito solo desde su origen hasta su implementación (V/F)</h3>
+      <div class="opts">
+        <label class="opt"><input name="q5_10" type="radio"><span class="chip incorrect">Verdadero</span></label>
+        <label class="opt"><input name="q5_10" type="radio" checked><span class="chip correct">Falso</span></label>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">App sin JS (HTML+CSS)</span>
+      <span class="tag">Feedback instantáneo</span>
+      <span class="tag">Secciones colapsables</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Hecho con ❤️ para practicar Ingeniería de Requerimientos. Puedes editar el HTML para ajustar claves si tu docente usa otras variantes.
+</footer>
+
+</body>
+</html>
